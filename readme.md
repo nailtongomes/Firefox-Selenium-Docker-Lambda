@@ -1,4 +1,4 @@
-Selenium Lambda Docker Image
+Firefox Selenium Lambda Docker Image
 ============================
 
 Table of Contents
@@ -43,71 +43,36 @@ Prerequisites
 Build and Run
 -------------
 
-### For Non-Technical Users
+### Build
 
-1.  **Open Command Prompt or Terminal**: Search for "cmd" on Windows or "Terminal" on Mac and open it.
-    
-2.  **Navigate to the Folder**: Use the `cd` command to navigate to the folder where your Dockerfile is located.
-    
-3.  **Build the Image**: Copy and paste the following command and press Enter.
-    
-    bashCopy code
-    
-    `docker build --platform linux/amd64 -t selenium-lambda .`
-    
-4.  **Run the Container**: Copy and paste the following command and press Enter.
-    
-    bashCopy code
-    
-    `docker run -it --rm -e AWS_LAMBDA_FUNCTION_TIMEOUT=300 -e AWS_LAMBDA_FUNCTION_MEMORY_SIZE=1024 -p 9000:8080 selenium-lambda:latest`
-    
-
-### For Technical Users
-
-#### Build the Docker Image
-
-bashCopy code
+#### 1. Build the Docker Image
 
 `docker build --platform linux/amd64 -t selenium-lambda .`
 
-#### Run the Docker Container
-
-bashCopy code
+#### 2. Run the Docker Container
 
 `docker run -it --rm -e AWS_LAMBDA_FUNCTION_TIMEOUT=300 -e AWS_LAMBDA_FUNCTION_MEMORY_SIZE=1024 -p 9000:8080 selenium-lambda:latest`
+
+#### 3. Local Testing with
+
+`Invoke-WebRequest -Uri "http://localhost:9000/2015-03-31/functions/function/invocations" -Method POST -Body '{"headless_mode": false, "needs_download_file": false, "clean_init": false, "script_name": null}'`
+
+OR
+
+`curl -X POST "http://localhost:9000/2015-03-31/functions/function/invocations" -d "{\"headless_mode\": false, \"needs_download_file\": false, \"clean_init\": false, \"script_name\": null}"`
 
 Environment Variables
 ---------------------
 
-Variable
+Variable || Description || Default Value
 
-Description
+`AWS_LAMBDA_FUNCTION_TIMEOUT` || AWS Lambda function timeout || 300 (5 minutes)
 
-Default Value
+`AWS_LAMBDA_FUNCTION_MEMORY_SIZE` || AWS Lambda function memory size || 1024 MB
 
-`AWS_LAMBDA_FUNCTION_TIMEOUT`
+`SCREEN_WIDTH` || Screen width for Selenium || 1920
 
-AWS Lambda function timeout
-
-300 (5 minutes)
-
-`AWS_LAMBDA_FUNCTION_MEMORY_SIZE`
-
-AWS Lambda function memory size
-
-1024 MB
-
-`SCREEN_WIDTH`
-
-Screen width for Selenium
-
-1920
-
-`SCREEN_HEIGHT`
-
-Screen height for Selenium
-
-1080
+`SCREEN_HEIGHT` || Screen height for Selenium || 1080
 
 Dependencies
 ------------
@@ -137,7 +102,7 @@ Support Me
 
 For any issues or questions, please contact the maintainer via email.
 
-If you find this project helpful and would like to support its development, consider buying me a coffee or a toy for my children! You can send cryptocurrency to my Coinbase wallet using the following details:
+If you find this project helpful and would like to support its development, consider buying me a coffee or a toy for my children! You can send cryptocurrency to my *Coinbase wallet* using the following details:
 
 *   **Bitcoin (BTC) - Bitcoin Network**: `3KEyAyYAyBfXkciRhrejz6ZmXjigZ5GnLj`
 *   **Ethereum (ETH) - Ethereum Network**: `0x842c95127163a3bc05a43215f0D85Fb4361Fd460`

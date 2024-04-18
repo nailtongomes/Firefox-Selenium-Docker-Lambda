@@ -62,7 +62,7 @@ RUN yum -y -q install \
     pango \
     procps \
     xorg-x11-server-Xvfb \
-    xorg-x11-xauth xdpyinfo \ \
+    xorg-x11-xauth \ xdpyinfo \
     # cleanup
     && yum clean all \
     && rm -rf /var/cache/yum
@@ -80,8 +80,9 @@ COPY --from=build /opt/geckodriver /tmp/geckodriver
 # Copy main Python script and entrypoint script
 COPY main.py ./
 # To activate virtual display
-COPY entrypoint.sh /
+# COPY entrypoint.sh ./
 
 # Set entrypoint for AWS Lambda
 CMD [ "main.handler" ]
-ENTRYPOINT ["/entrypoint.sh"]
+# To activate virtual display
+# ENTRYPOINT ["/entrypoint.sh"]

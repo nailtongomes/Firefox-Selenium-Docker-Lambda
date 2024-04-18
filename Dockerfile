@@ -8,8 +8,10 @@ LABEL maintainer="nailtongsilva@gmail.com" \
     description="Selenium with Firefox on AWS Lambda"
 
 # Environment variables to hold URLs for Firefox binaries
-ENV URL_FIREFOX="https://ftp.mozilla.org/pub/firefox/releases/117.0/linux-x86_64/en-US/firefox-117.0.tar.bz2" \
+# https://ftp.mozilla.org/pub/firefox/releases/117.0/linux-x86_64/en-US/firefox-117.0.tar.bz2
+ENV URL_FIREFOX="https://ftp.mozilla.org/pub/firefox/releases/125.0.1/linux-x86_64/en-US/firefox-125.0.1.tar.bz2" \
     URL_GECKODRIVER="https://github.com/mozilla/geckodriver/releases/download/v0.33.0/geckodriver-v0.33.0-linux64.tar.gz" \
+    LOCALPATH_FIREFOX="/tmp/firefox-125.0.1.tar.bz2" \
     # Set screen size
     SCREEN_WIDTH=1920 \
     SCREEN_HEIGHT=1080
@@ -18,15 +20,15 @@ ENV URL_FIREFOX="https://ftp.mozilla.org/pub/firefox/releases/117.0/linux-x86_64
 RUN yum -y -q install unzip gzip tar bzip2 && \
     # Install Firefox and GeckoDriver
     mkdir -p /opt/firefox && \
-    curl -Lo "/tmp/firefox-116.0b3.tar.bz2" ${URL_FIREFOX} && \
-    tar -jxf "/tmp/firefox-116.0b3.tar.bz2" --strip-components=1 -C "/opt/firefox/" && \
+    curl -Lo ${LOCALPATH_FIREFOX} ${URL_FIREFOX} && \
+    tar -jxf ${LOCALPATH_FIREFOX} --strip-components=1 -C "/opt/firefox/" && \
     mkdir -p "/opt/geckodriver" && \
     curl -Lo "/opt/geckodriver/geckodriver-v0.33.0-linux64.tar.gz" ${URL_GECKODRIVER} && \
     tar -zxf "/opt/geckodriver/geckodriver-v0.33.0-linux64.tar.gz" -C "/opt/geckodriver/" && \
     chmod +x "/opt/geckodriver/geckodriver" && \
     ln -s /tmp/firefox/firefox /usr/bin/firefox && \
     ln -s /tmp/geckodriver/geckodriver /usr/bin/geckodriver && \
-    rm -rf /tmp/firefox-116.0b3.tar.bz2 && \
+    rm -rf ${LOCALPATH_FIREFOX} && \
     # Cleanup
     yum remove -y unzip tar bzip2 gzip && \
     yum clean all -y && \
@@ -60,18 +62,17 @@ RUN yum -y -q install \
     pango \
     procps \
     xorg-x11-server-Xvfb \
-    xorg-x11-xauth \
-    xdpyinfo \ 
+    xorg-x11-xauth xdpyinfo \ \
     # cleanup
     && yum clean all \
     && rm -rf /var/cache/yum
 
 # Install Python Dependencies
 RUN pip install --no-cache-dir \
-    boto3>=1.28.40 \
+    boto3>=1.34 \
     pyvirtualdisplay>=3.0 \
     requests>=2.31.0 \
-    selenium>=4.12 > /dev/null
+    selenium>=4.19 > /dev/null
 
 # Copy downloaded binaries from the first phase
 COPY --from=build /opt/firefox /tmp/firefox

@@ -281,7 +281,6 @@ def create_firefox_driver(
 	profile = make_ffox_profile(tempfile.mkdtemp())
 	options.profile = profile
 
-
 	if clean_init is True:
 		# https://www.selenium.dev/documentation/selenium_manager/
 		print('>>> Firefox with Selenium Manager <<<')
@@ -428,6 +427,8 @@ if __name__ == '__main__':
 	# To call the Lambda function locally, use the following commands:
 	# Below is an example of a test event that can be used to invoke the Lambda function.
 	# PowerShell:
-	# Invoke-WebRequest -Uri "http://localhost:9000/2015-03-31/functions/function/invocations" -Method POST -Body '{"headless_mode": false, "needs_download_file": false, "clean_init": false, "script_name": null}'
+	# Invoke-WebRequest -Uri "http://localhost:9000/2015-03-31/functions/function/invocations"
+		# -Method POST -Body '{"headless_mode": false, "needs_download_file": false, "clean_init": false, "script_name": null}'
 	# CMD:
-	# curl -X POST "http://localhost:9000/2015-03-31/functions/function/invocations" -d "{\"headless_mode\": false, \"needs_download_file\": false, \"clean_init\": false, \"script_name\": null}"
+	# curl -X POST "http://localhost:9000/2015-03-31/functions/function/invocations"
+		# -d "{\"headless_mode\": false, \"needs_download_file\": false, \"clean_init\": false, \"script_name\": null}"
